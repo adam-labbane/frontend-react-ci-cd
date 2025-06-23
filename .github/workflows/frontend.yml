@@ -1,0 +1,60 @@
+name: Front – Cypress & GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Lancer la stack si tu as besoin de backend/mysql (facultatif sinon)
+      - name: Build & start stack
+        run: docker compose up -d --build
+
+      # Cypress attend que le front soit dispo
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          wait-on: http://localhost:3000
+          wait-on-timeout: 120
+
+      - name: Stop stack
+        if: always()
+        run: docker compose down
+
+  deploy-pages:
+    needs: e2e
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies & build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
