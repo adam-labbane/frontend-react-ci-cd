@@ -46,7 +46,7 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: false
+          start: serve -s build -l 3000
           wait-on: http://localhost:3000
         env:
           REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
