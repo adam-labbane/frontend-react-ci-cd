@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_URL || "http://localhost:3000"
+  baseURL: "https://backend-fast-api-sigma.vercel.app/users"
 });
 
 export default API;
