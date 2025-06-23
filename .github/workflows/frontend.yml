@@ -17,22 +17,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      # Lancer la stack si tu as besoin de backend/mysql (facultatif sinon)
-      - name: Build & start stack
-        run: docker compose up -d --build
-
-      # Cypress attend que le front soit dispo
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
           wait-on: http://localhost:3000
           wait-on-timeout: 120
-
-      - name: Stop stack
-        if: always()
-        run: docker compose down
-
+          
   deploy-pages:
     needs: e2e
     runs-on: ubuntu-latest
