@@ -32,21 +32,21 @@ jobs:
         env:
           REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
 
-      - name: Install serve
-        run: npm install -g serve
+      # - name: Install serve
+      #   run: npm install -g serve
 
-      - name: Start server in background
-        run: serve -s build -l 3000 &
-        env:
-          REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
+      # - name: Start server in background
+      #   run: serve -s build -l 3000 &
+      #   env:
+      #     REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
 
-      - name: Wait for frontend
-        run: npx wait-on http://localhost:3000
+      # - name: Wait for frontend
+      #   run: npx wait-on http://localhost:3000
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: serve -s build -l 3000
+          start: npx serve -s build -l 3000
           wait-on: http://localhost:3000
         env:
           REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
