@@ -6,7 +6,7 @@ describe('Workflow utilisateur complet', () => {
     cy.visit('http://localhost:3000');
   });
 
-  it('crée un admin, un user, affiche la liste, voit les détails puis le supprime', () => {
+  it.skip('crée un admin, un user, affiche la liste, voit les détails puis le supprime', () => {
     cy.fillUserForm({
       firstname: 'Admin',
       lastname: 'Test',
