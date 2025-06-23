@@ -37,10 +37,10 @@ jobs:
         env:
           REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
 
-      - name: Vérifie la présence de l’URL backend dans le JS généré
+      - name: Vérifie que le backend Vercel est prêt
         run: |
-          echo "JS injecté (analyse build) :"
-          grep -o 'https://[^"]*' build/static/js/*.js || echo "⚠️ Aucune URL injectée"
+          npx wait-on ${{ secrets.REACT_APP_SERVER_URL }}/users --timeout 20000 || echo "❌ Backend KO"
+
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
